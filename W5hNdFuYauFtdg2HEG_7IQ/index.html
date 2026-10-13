@@ -47,10 +47,11 @@ AFRAME.registerComponent("mousegrab",{init(){let held=null;const cam=document.ge
   else if(t&&t.classList.contains("sb")){window.open(SCOREBOARD_URL,"_blank","noopener");}
   else if(t&&t.classList.contains("card")){held=t;cam.object3D.attach(t.object3D);}});}});
 </script>
-<style>#sbbtn{position:fixed;right:10px;top:10px;z-index:9;background:#22c55e;color:#0f172a;font:bold 14px sans-serif;padding:8px 14px;border-radius:8px;text-decoration:none}#stamp{position:fixed;left:8px;bottom:8px;color:#fff;font:12px sans-serif;z-index:9;background:#0008;padding:4px 8px;border-radius:6px}</style>
+<style>#dashbtn{position:fixed;right:130px;top:10px;z-index:9;background:#3b82f6;color:#fff;font:bold 14px sans-serif;padding:8px 14px;border-radius:8px;text-decoration:none}#sbbtn{position:fixed;right:10px;top:10px;z-index:9;background:#22c55e;color:#0f172a;font:bold 14px sans-serif;padding:8px 14px;border-radius:8px;text-decoration:none}#stamp{position:fixed;left:8px;bottom:8px;color:#fff;font:12px sans-serif;z-index:9;background:#0008;padding:4px 8px;border-radius:6px}</style>
 </head><body>
 <div id="stamp">loading…</div>
 <a id="sbbtn" href="https://app.notion.com/p/3f886d218d04817ba02df538ce1d2ca5" target="_blank" rel="noopener noreferrer">Scoreboard ↗</a>
+<a id="dashbtn" href="../WKSkJJknZDyY1OBHhSKaLQ/" target="_blank" rel="noopener">Dashboard ↗</a>
 <a-scene court renderer="colorManagement:true" webxr="optionalFeatures: local-floor, hit-test" xr-mode-ui="enabled:true; XRMode: xr" background="color:#0b1020">
  <a-entity id="rig">
   <a-entity id="cam" camera position="0 1.6 0" look-controls wasd-controls>
