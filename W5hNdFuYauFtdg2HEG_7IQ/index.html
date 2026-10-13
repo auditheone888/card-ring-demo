@@ -5,6 +5,7 @@
 <meta name="referrer" content="no-referrer">
 <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
 <script>
+const SCOREBOARD_URL="https://app.notion.com/p/3f886d218d04817ba02df538ce1d2ca5";
 const STATUS_COLORS={"Working":"#22c55e","Waiting on King":"#eab308","Blocked":"#ef4444","Idle":"#9ca3af","Drafted":"#3b82f6"};
 function wrap(ctx,text,x,y,maxW,lh,maxLines){const words=(text||"").split(/\s+/);let line="",n=0;
  for(const w of words){const t=line?line+" "+w:w;if(ctx.measureText(t).width>maxW&&line){ctx.fillText(line,x,y);y+=lh;line=w;if(++n>=maxLines-1){line+=" …";break;}}else line=t;}
@@ -36,17 +37,20 @@ AFRAME.registerComponent("court",{init(){fetch("data.json",{cache:"no-store"}).t
 // grab: trigger on a pointed card attaches it to the controller; release drops it in place
 AFRAME.registerComponent("grabber",{init(){this.held=null;
  this.el.addEventListener("triggerdown",()=>{const hit=this.el.components.raycaster.intersectedEls.find(e=>e.classList.contains("card"));
+  if(hit&&hit.classList.contains("sb")){window.open(SCOREBOARD_URL,"_blank","noopener");return;}
   if(hit){this.held=hit;this.el.object3D.attach(hit.object3D);}});
  this.el.addEventListener("triggerup",()=>{if(this.held){this.el.sceneEl.object3D.attach(this.held.object3D);this.held=null;}});}});
 // desktop drag: click a card to pick it up in front of camera, click again to drop
 AFRAME.registerComponent("mousegrab",{init(){let held=null;const cam=document.getElementById("cam");
  this.el.addEventListener("click",e=>{const t=e.detail.intersectedEl;
   if(held){this.el.sceneEl.object3D.attach(held.object3D);held=null;}
+  else if(t&&t.classList.contains("sb")){window.open(SCOREBOARD_URL,"_blank","noopener");}
   else if(t&&t.classList.contains("card")){held=t;cam.object3D.attach(t.object3D);}});}});
 </script>
-<style>#stamp{position:fixed;left:8px;bottom:8px;color:#fff;font:12px sans-serif;z-index:9;background:#0008;padding:4px 8px;border-radius:6px}</style>
+<style>#sbbtn{position:fixed;right:10px;top:10px;z-index:9;background:#22c55e;color:#0f172a;font:bold 14px sans-serif;padding:8px 14px;border-radius:8px;text-decoration:none}#stamp{position:fixed;left:8px;bottom:8px;color:#fff;font:12px sans-serif;z-index:9;background:#0008;padding:4px 8px;border-radius:6px}</style>
 </head><body>
 <div id="stamp">loading…</div>
+<a id="sbbtn" href="https://app.notion.com/p/3f886d218d04817ba02df538ce1d2ca5" target="_blank" rel="noopener noreferrer">Scoreboard ↗</a>
 <a-scene court renderer="colorManagement:true" webxr="optionalFeatures: local-floor, hit-test" xr-mode-ui="enabled:true; XRMode: xr" background="color:#0b1020">
  <a-entity id="rig">
   <a-entity id="cam" camera position="0 1.6 0" look-controls wasd-controls>
@@ -55,6 +59,7 @@ AFRAME.registerComponent("mousegrab",{init(){let held=null;const cam=document.ge
   <a-entity laser-controls="hand:right" raycaster="objects:.card;far:10" grabber></a-entity>
   <a-entity laser-controls="hand:left" raycaster="objects:.card;far:10" grabber></a-entity>
  </a-entity>
+ <a-entity id="sbpanel" class="card sb" geometry="primitive:plane;width:0.7;height:0.22" material="color:#22c55e;shader:flat" position="0 0.75 -1.2" rotation="-25 0 0" text="value:Open Scoreboard (Notion);align:center;color:#0f172a;width:1.6"></a-entity>
  <a-entity light="type:ambient;intensity:1"></a-entity>
 </a-scene>
 <script>
